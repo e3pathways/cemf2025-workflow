@@ -9,7 +9,5 @@ repositories:
 definitions:
   variable:
     repository: openENTRANCE
-  region:
-    repository: openENTRANCE
 mappings:
     repository: openENTRANCE
