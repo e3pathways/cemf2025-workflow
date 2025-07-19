@@ -9,5 +9,3 @@ repositories:
 definitions:
   variable:
     repository: openENTRANCE
-mappings:
-    repository: openENTRANCE
