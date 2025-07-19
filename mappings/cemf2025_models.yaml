@@ -1,5 +1,10 @@
 model:
   - MESSAGEix-China
   - CE3METL
+  - REMIND-China
+  - GCAM-China-v6
+  - GCAM-CHN
+  - IMED|TEC
+  - CGEM-CESM
 native_regions:
   - China
