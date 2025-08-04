@@ -1,9 +1,10 @@
-from pathlib import Path
-import pyam
-from nomenclature import DataStructureDefinition, RegionProcessor, process
-from nomenclature.codelist import RegionCode
+import logging
 from datetime import datetime, timedelta
+from pathlib import Path
 
+import pyam
+from nomenclature import DataStructureDefinition, process
+from nomenclature.codelist import RegionCode
 
 # datetime must be in Central European Time (CET)
 EXP_TZ = "UTC+01:00"
@@ -22,7 +23,6 @@ def main(df: pyam.IamDataFrame) -> pyam.IamDataFrame:
 
     # initialize the codelists and region-processing
     dsd = DataStructureDefinition(here / "definitions", dimensions=dimensions)
-    processor = RegionProcessor.from_directory(path=here / "mappings", dsd=dsd)
 
     # check if directional data exists in the scenario data, add to region codelist
     if any([r for r in df.region if ">" in r]):
@@ -40,7 +40,7 @@ def main(df: pyam.IamDataFrame) -> pyam.IamDataFrame:
                     dsd.region[r] = RegionCode(name=r, hierarchy="directional")
 
     # run the validation and region-processing
-    df = process(df, dsd, processor=processor)
+    df = process(df, dsd)
 
     # assign meta indicator for scenario "work package" category
     for model, scenario in df.index:
@@ -53,7 +53,7 @@ def main(df: pyam.IamDataFrame) -> pyam.IamDataFrame:
 
     # convert to subannual format if data provided in datetime format
     if df.time_col == "time":
-        logger.info('Re-casting from "time" column to categorical "subannual" format')
+        logging.info('Re-casting from "time" column to categorical "subannual" format')
         df = df.swap_time_for_year(subannual=OE_SUBANNUAL_FORMAT)
 
     # check that any datetime-like items in "subannual" are valid datetime and UTC+01:00
