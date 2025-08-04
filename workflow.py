@@ -22,7 +22,6 @@ def main(df: pyam.IamDataFrame) -> pyam.IamDataFrame:
 
     # initialize the codelists and region-processing
     dsd = DataStructureDefinition(here / "definitions", dimensions=dimensions)
-    processor = RegionProcessor.from_directory(path=here / "mappings", dsd=dsd)
 
     # check if directional data exists in the scenario data, add to region codelist
     if any([r for r in df.region if ">" in r]):
@@ -40,7 +39,7 @@ def main(df: pyam.IamDataFrame) -> pyam.IamDataFrame:
                     dsd.region[r] = RegionCode(name=r, hierarchy="directional")
 
     # run the validation and region-processing
-    df = process(df, dsd, processor=processor)
+    df = process(df, dsd)
 
     # assign meta indicator for scenario "work package" category
     for model, scenario in df.index:
